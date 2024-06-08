@@ -86,7 +86,7 @@ function agregar_variables_func_obj(func_objetivo, variables) {
     }
   }
 
-  const miu = (numeroMasGrande * 100).toString();
+  const miu = (numeroMasGrande * 1000).toString();
   for (let variable of variables_m) {
     nueva_func_objetivo += "-" + miu + variable;
   }
@@ -418,7 +418,9 @@ function menorValorPosicionO(vector) {
       posicionMinimoO = i;
     }
   }
-
+  if (minimoO === Infinity) {
+    error = true;
+  }
   return {
     minimoO,
     posicionMinimoO,
@@ -462,11 +464,12 @@ function reemplazarColumnas(
   }
   document.getElementById("entrasale").style.display = "block";
   var entrasale = document.getElementById("entrasale");
-  entrasale.textContent =
-    "Ingresó la variable " +
+  var texr = (entrasale.textContent =
+    "Ingresa la variable " +
     vectorX[posicionMinimoR] +
-    " y salió de la base " +
-    vectorXb[posicionMinimoO];
+    " y sale " +
+    vectorXb[posicionMinimoO]);
+  entrasale.innerHTML = texr.replaceAll("(", "<sub>").replaceAll(")", "</sub>");
   vectorXb[posicionMinimoO] = vectorX[posicionMinimoR];
   vectorCbnum[posicionMinimoO] = vectorCnum[posicionMinimoR];
 
@@ -507,7 +510,7 @@ function solucionesAlternativas(vectorX, vectorXb, resultado3) {
       "solucionesalternativas"
     );
     solucionesalternativas.textContent =
-      "Se han encontrado múltiples soluciones óptimas en el problema. Por favor, tenga en cuenta que existen varias soluciones que satisfacen los criterios de optimización";
+      "Hay múltiples soluciones óptimas. Existen varias soluciones que satisfacen los criterios de optimización";
   }
 }
 
@@ -539,7 +542,7 @@ function incompatible(vectorXb, resultado3) {
     document.getElementById("incompatible").style.display = "block";
     var incompatible = document.getElementById("incompatible");
     incompatible.textContent =
-      "El problema es incompatible y no tiene solución factible.";
+      "Problema es incompatible y no tiene solución factible ya que se llega a una tabla aparentemente óptima y aun quedan variables aritificales en la base";
     error = true;
     console.log(`El vector es incompatible debido a la presencia de 'm'.`);
     posicionesM.forEach((posicion) => {
@@ -562,6 +565,6 @@ function mostrarSolucionesVariables(lista1, lista2) {
       resultado += ", ";
     }
   }
-
+  resultado = resultado.replaceAll("(", "<sub>").replaceAll(")", "</sub>");
   return resultado;
 }
